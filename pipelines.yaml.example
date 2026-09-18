@@ -10,8 +10,23 @@ pipelines:
       - name: shout
         command: tr a-z A-Z
 
-  # Template for wiring in real local-first tools. Uncomment and adjust flags
-  # to match each tool's actual CLI (checked, not guessed) before running --
+  # A real, verified pipeline: rename-photo -> scale-photo -> scrub-photo.
+  # Each tool's --pipe flag prints the file path(s) it touched, one per line,
+  # which the next tool reads from stdin -- no {prev} substitution needed,
+  # this is the plain stdin-piping path. Run with:
+  #   PHOTO_DIR=/path/to/photos pipeline-compose run photo-prep
+  photo-prep:
+    description: Rename, scale to web-size, and strip GPS EXIF from every photo in $PHOTO_DIR
+    steps:
+      - name: rename
+        command: rename-photo "$PHOTO_DIR" --pipe --provider anthropic
+      - name: scale
+        command: scale-photo --pipe
+      - name: scrub
+        command: scrub-photo --pipe
+
+  # Template for wiring in other tools. Uncomment and adjust flags to match
+  # each tool's actual CLI (checked, not guessed) before running --
   # `pipeline-compose run <name> --dry-run` first to see the resolved
   # commands without executing anything.
   #
