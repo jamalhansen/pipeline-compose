@@ -13,3 +13,4 @@ CLAUDE.md
 _NOTES.md
 __pycache__
 uv.toml
+pipelines.yaml

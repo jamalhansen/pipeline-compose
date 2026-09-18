@@ -1,0 +1,24 @@
+pipelines:
+  # A verified, working demo -- proves the mechanism (stdout piped to the next
+  # step's stdin, {prev} substituted inline when a command needs the value as
+  # an argument instead) without pretending to know any real tool's flags.
+  demo:
+    description: Two shell steps proving the chaining mechanism works
+    steps:
+      - name: greet
+        command: printf 'hello pipeline-compose'
+      - name: shout
+        command: tr a-z A-Z
+
+  # Template for wiring in real local-first tools. Uncomment and adjust flags
+  # to match each tool's actual CLI (checked, not guessed) before running --
+  # `pipeline-compose run <name> --dry-run` first to see the resolved
+  # commands without executing anything.
+  #
+  # my-real-pipeline:
+  #   description: content-discovery-agent's scored output feeding a reviewer
+  #   steps:
+  #     - name: discover
+  #       command: content-discovery-agent scan --json
+  #     - name: review
+  #       command: blog-draft-reviewer --pipe
