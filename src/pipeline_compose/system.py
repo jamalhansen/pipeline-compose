@@ -1,4 +1,5 @@
 """YAML config loading and real subprocess execution for pipeline-compose."""
+
 from __future__ import annotations
 
 import subprocess

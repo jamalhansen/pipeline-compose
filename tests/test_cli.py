@@ -55,9 +55,7 @@ def test_run_dry_run_reports_without_executing(tmp_path):
 
 def test_run_failing_step_exits_nonzero(tmp_path):
     config = tmp_path / "pipelines.yaml"
-    config.write_text(
-        "pipelines:\n  bad:\n    steps:\n      - name: boom\n        command: exit 1\n"
-    )
+    config.write_text("pipelines:\n  bad:\n    steps:\n      - name: boom\n        command: exit 1\n")
     result = CliRunner().invoke(app, ["run", "bad", "--config", str(config)])
     assert result.exit_code == 1
     assert "FAILED" in result.output

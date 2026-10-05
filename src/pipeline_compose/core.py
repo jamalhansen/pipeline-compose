@@ -11,6 +11,7 @@ than reading it from stdin).
 Subprocess execution is injected as `runner` so this stays testable without
 shelling out; system.py provides the real one.
 """
+
 from __future__ import annotations
 
 from collections.abc import Callable
