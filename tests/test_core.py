@@ -59,8 +59,13 @@ class TestRunPipeline:
 
     def test_dry_run_never_calls_runner(self):
         calls = []
+
+        def runner(command: str, stdin: str | None) -> tuple[str, str, int]:
+            calls.append(1)
+            return "", "", 0
+
         pipeline = self._pipeline(("a", "echo {prev}"), ("b", "cat"))
-        results = run_pipeline(pipeline, lambda c, s: calls.append(1), dry_run=True)
+        results = run_pipeline(pipeline, runner, dry_run=True)
         assert calls == []
         assert len(results) == 2
         assert all(r.returncode == 0 for r in results)
